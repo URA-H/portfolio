@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+@theme {
+  /* Colors — Light Mode */
+  --color-bg-primary: #F4EFE6;
+  --color-bg-secondary: #FAF6EF;
+  --color-bg-tertiary: #EBE3D3;
+  --color-bg-inverse: #1A1A1A;
+
+  --color-fg-primary: #1A1A1A;
+  --color-fg-secondary: #4A4744;
+  --color-fg-muted: #8A8682;
+  --color-fg-inverse: #F4EFE6;
+
+  --color-accent: #C2410C;
+  --color-accent-strong: #8B2C07;
+  --color-accent-hover: #A53408;
+  --color-accent-muted: #E8C9B5;
+
+  --color-border-default: #DDD5C5;
+  --color-border-strong: #1A1A1A;
+  --color-border-muted: #ECE5D5;
+
+  /* Fonts */
+  --font-display: 'DM Serif Display', serif;
+  --font-body: 'Inter', system-ui, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+  --font-jp: 'Noto Sans JP', sans-serif;
+
+  /* Motion timing */
+  --duration-instant: 100ms;
+  --duration-quick: 200ms;
+  --duration-base: 300ms;
+  --duration-slow: 500ms;
+  --duration-deliberate: 800ms;
+  --duration-hold: 3000ms;
+
+  /* Motion easing */
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+  --ease-decel: cubic-bezier(0, 0, 0.2, 1);
+  --ease-accel: cubic-bezier(0.4, 0, 1, 1);
+}
+
+/* Dark Mode — auto via prefers-color-scheme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg-primary: #1A1A1A;
+    --color-bg-secondary: #232220;
+    --color-bg-tertiary: #2D2B28;
+    --color-bg-inverse: #F4EFE6;
+
+    --color-fg-primary: #F4EFE6;
+    --color-fg-secondary: #C4C0BA;
+    --color-fg-muted: #7E7B76;
+    --color-fg-inverse: #1A1A1A;
+
+    --color-accent: #D9550E;
+    --color-accent-strong: #F26020;
+    --color-accent-hover: #FF7A33;
+    --color-accent-muted: #3A2418;
+
+    --color-border-default: #2D2B28;
+    --color-border-strong: #F4EFE6;
+    --color-border-muted: #232220;
+  }
+}
+
+/* Dark Mode — manual override (data-theme="dark") */
+[data-theme="dark"] {
+  --color-bg-primary: #1A1A1A;
+  --color-bg-secondary: #232220;
+  --color-bg-tertiary: #2D2B28;
+  --color-bg-inverse: #F4EFE6;
+
+  --color-fg-primary: #F4EFE6;
+  --color-fg-secondary: #C4C0BA;
+  --color-fg-muted: #7E7B76;
+  --color-fg-inverse: #1A1A1A;
+
+  --color-accent: #D9550E;
+  --color-accent-strong: #F26020;
+  --color-accent-hover: #FF7A33;
+  --color-accent-muted: #3A2418;
+
+  --color-border-default: #2D2B28;
+  --color-border-strong: #F4EFE6;
+  --color-border-muted: #232220;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-hold: 500ms;
+    --duration-deliberate: 200ms;
+  }
+}
+
+body {
+  background-color: var(--color-bg-primary);
+  color: var(--color-fg-primary);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}

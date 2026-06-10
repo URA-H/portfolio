@@ -1,0 +1,71 @@
+---
+import { getCollection } from 'astro:content';
+import { getImage } from 'astro:assets';
+import Layout from '../layouts/Layout.astro';
+import Shelf, { type ShelfWork } from '../components/Shelf';
+
+const works = (await getCollection('works')).sort(
+  (a, b) => a.data.order - b.data.order,
+);
+
+const shelfData: ShelfWork[] = await Promise.all(
+  works.map(async (w) => {
+    const optimized = await getImage({
+      src: w.data.jacket,
+      width: 600,
+      height: 600,
+      format: 'webp',
+    });
+    return {
+      title: w.data.title,
+      catalogNumber: w.data.catalogNumber,
+      matrixNumber: w.data.matrixNumber,
+      category: w.data.category,
+      year: w.data.year,
+      shortDescription: w.data.shortDescription,
+      href: w.data.href,
+      jacketSrc: optimized.src,
+    };
+  }),
+);
+---
+
+<Layout>
+  <main class="min-h-screen py-24">
+    <header class="mb-20 px-6 max-w-6xl mx-auto">
+      <p class="font-mono text-xs text-fg-secondary mb-4 tracking-wider uppercase">
+        HU RECORDS — EST. 2026
+      </p>
+      <h1 class="font-display text-5xl md:text-6xl text-fg-primary leading-none mb-3">
+        Haruya Ura
+      </h1>
+      <p class="font-body text-lg text-fg-secondary">
+        Engineer / Maker. A small shelf of releases.
+      </p>
+    </header>
+
+    <section class="mb-32">
+      <div class="px-6 max-w-6xl mx-auto mb-10 border-t border-border-default pt-12">
+        <p class="font-mono text-xs text-fg-secondary mb-3 tracking-wider uppercase">
+          Catalogue · 11 records
+        </p>
+        <h2 class="font-display text-3xl md:text-4xl text-fg-primary mb-2">
+          Drag the crate.
+        </h2>
+        <p class="font-body text-sm text-fg-secondary">
+          Eleven jackets — four LPs, three 12-inch singles, liner notes, a spec sheet,
+          a cert EP, and one that hasn't been released yet.
+        </p>
+      </div>
+
+      <Shelf works={shelfData} client:load />
+    </section>
+
+    <footer
+      class="px-6 max-w-6xl mx-auto border-t border-border-default pt-6 flex justify-between font-mono text-xs text-fg-muted"
+    >
+      <span>HUR-PROTO-A</span>
+      <span>2026</span>
+    </footer>
+  </main>
+</Layout>

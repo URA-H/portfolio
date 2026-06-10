@@ -1,0 +1,133 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+
+export async function getStaticPaths() {
+  const works = await getCollection('works');
+  return works
+    .filter((w) => ['LP', '12-inch'].includes(w.data.category))
+    .map((work) => ({
+      params: { slug: work.id },
+      props: { work },
+    }));
+}
+
+const { work } = Astro.props;
+const { Content } = await render(work);
+---
+
+<Layout
+  title={`${work.data.title} — Haruya Ura`}
+  description={work.data.shortDescription}
+>
+  <main class="min-h-screen px-6 py-16 max-w-4xl mx-auto">
+    <a
+      href="/"
+      class="font-mono text-xs text-fg-secondary hover:text-accent-strong transition-colors"
+    >
+      ← shelf
+    </a>
+
+    <header class="mt-12 mb-12">
+      <p class="font-mono text-xs text-fg-secondary mb-3">
+        {work.data.catalogNumber} · {work.data.matrixNumber} · {work.data.category} · {work.data.year}
+      </p>
+      <h1 class="font-display text-5xl md:text-6xl text-fg-primary leading-none">
+        {work.data.title}
+      </h1>
+      <p class="font-body text-lg text-fg-secondary mt-3">
+        {work.data.shortDescription}
+      </p>
+    </header>
+
+    <div class="grid md:grid-cols-[1fr_1fr] gap-10 mb-16">
+      <div class="aspect-square overflow-hidden border border-border-default bg-bg-secondary">
+        <Image
+          src={work.data.jacket}
+          alt={`${work.data.title} jacket`}
+          width={800}
+          height={800}
+          class="w-full h-full object-cover"
+        />
+      </div>
+
+      <div class="space-y-8">
+        <div>
+          <p class="font-mono text-xs text-fg-muted mb-2">FORMAT</p>
+          <p class="font-body text-base text-fg-primary">{work.data.format}</p>
+        </div>
+
+        {
+          work.data.techStack.length > 0 && (
+            <div>
+              <p class="font-mono text-xs text-fg-muted mb-2">STACK</p>
+              <ul class="font-mono text-xs text-fg-primary space-y-1">
+                {work.data.techStack.map((tech) => (
+                  <li>· {tech}</li>
+                ))}
+              </ul>
+            </div>
+          )
+        }
+
+        <div class="flex flex-col gap-2 font-mono text-xs">
+          {
+            work.data.githubUrl && (
+              <a
+                href={work.data.githubUrl}
+                class="text-accent-strong hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                GitHub →
+              </a>
+            )
+          }
+          {
+            work.data.liveUrl && (
+              <a
+                href={work.data.liveUrl}
+                class="text-accent-strong hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Live →
+              </a>
+            )
+          }
+          {
+            work.data.npmUrl && (
+              <a
+                href={work.data.npmUrl}
+                class="text-accent-strong hover:underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                npm →
+              </a>
+            )
+          }
+        </div>
+      </div>
+    </div>
+
+    <article
+      class="max-w-2xl font-body text-base text-fg-primary leading-relaxed [&>p]:mb-4"
+    >
+      <Content />
+    </article>
+
+    <footer
+      class="mt-32 border-t border-border-default pt-6 flex justify-between font-mono text-xs text-fg-muted"
+    >
+      <span>{work.data.matrixNumber}</span>
+      <a
+        href="/"
+        class="hover:text-accent-strong transition-colors"
+      >
+        ← back to shelf
+      </a>
+    </footer>
+  </main>
+</Layout>
