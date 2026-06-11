@@ -67,6 +67,9 @@ export default function Shelf({ works }: Props) {
   const scrollX = useSpring(target, SPRING_CONFIG);
   const snapTimeoutRef = useRef<number | null>(null);
   const [expanded, setExpanded] = useState<ExpandState | null>(null);
+  const [hoveredWork, setHoveredWork] = useState<ShelfWork | null>(null);
+  const cursorX = useMotionValue(0);
+  const cursorY = useMotionValue(0);
   const totalCards = works.length;
 
   const cancelSnap = () => {
@@ -149,6 +152,11 @@ export default function Shelf({ works }: Props) {
     setExpanded({ work, rect });
   };
 
+  const handleMouseMove = (e: React.MouseEvent) => {
+    cursorX.set(e.clientX);
+    cursorY.set(e.clientY);
+  };
+
   return (
     <>
       <motion.div
@@ -162,6 +170,7 @@ export default function Shelf({ works }: Props) {
         }}
         onPan={handlePan}
         onPanEnd={handlePanEnd}
+        onMouseMove={handleMouseMove}
       >
         {works.map((work, i) => (
           <Card
@@ -171,10 +180,21 @@ export default function Shelf({ works }: Props) {
             scrollX={scrollX}
             totalCards={totalCards}
             onClick={handleCardClick}
+            onHover={(w) => setHoveredWork(w)}
             disabled={expanded !== null}
           />
         ))}
       </motion.div>
+
+      <AnimatePresence>
+        {hoveredWork && !expanded && (
+          <CursorLabel
+            work={hoveredWork}
+            cursorX={cursorX}
+            cursorY={cursorY}
+          />
+        )}
+      </AnimatePresence>
 
       <AnimatePresence>
         {expanded && (
@@ -192,6 +212,41 @@ export default function Shelf({ works }: Props) {
   );
 }
 
+interface CursorLabelProps {
+  work: ShelfWork;
+  cursorX: MotionValue<number>;
+  cursorY: MotionValue<number>;
+}
+
+function CursorLabel({ work, cursorX, cursorY }: CursorLabelProps) {
+  // Offset to the right and down so the label doesn't sit on the cursor
+  const labelX = useTransform(cursorX, (v) => v + 20);
+  const labelY = useTransform(cursorY, (v) => v + 20);
+
+  return (
+    <motion.div
+      className="fixed top-0 left-0 pointer-events-none z-40 max-w-xs"
+      style={{ x: labelX, y: labelY }}
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.15 }}
+    >
+      <div className="bg-bg-primary border border-border-strong px-3 py-2 shadow-[0_8px_24px_rgba(26,26,26,0.18)]">
+        <p className="font-mono text-[9px] text-fg-muted mb-1 tracking-widest uppercase">
+          {work.catalogNumber} · {work.category} · {work.year}
+        </p>
+        <p className="font-display text-sm text-fg-primary leading-tight mb-0.5">
+          {work.title}
+        </p>
+        <p className="font-body text-[11px] text-fg-secondary line-clamp-2 leading-snug">
+          {work.shortDescription}
+        </p>
+      </div>
+    </motion.div>
+  );
+}
+
 interface CardProps {
   work: ShelfWork;
   index: number;
@@ -202,6 +257,7 @@ interface CardProps {
     el: HTMLAnchorElement,
     e: React.MouseEvent,
   ) => void;
+  onHover: (work: ShelfWork | null) => void;
   disabled: boolean;
 }
 
@@ -211,6 +267,7 @@ function Card({
   scrollX,
   totalCards,
   onClick,
+  onHover,
   disabled,
 }: CardProps) {
   const halfN = totalCards / 2;
@@ -258,6 +315,8 @@ function Card({
         if (disabled || !linkRef.current) return;
         onClick(work, linkRef.current, e);
       }}
+      onMouseEnter={() => onHover(work)}
+      onMouseLeave={() => onHover(null)}
       className="absolute group block w-72 md:w-80 aspect-square"
       style={{
         left: '12%',
@@ -281,11 +340,6 @@ function Card({
           draggable={false}
           loading="lazy"
         />
-      </div>
-      <div className="absolute -bottom-10 left-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 pointer-events-none whitespace-nowrap">
-        <p className="font-mono text-[10px] text-fg-secondary tracking-widest uppercase">
-          {work.catalogNumber} :: {work.title}
-        </p>
       </div>
     </motion.a>
   );

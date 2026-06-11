@@ -20,6 +20,7 @@ const works = defineCollection({
       format: z.string(), // 物理フォーマットの一言（ジャケットの世界観）
       shortDescription: z.string(),
       jacket: image(),
+      screenshots: z.array(image()).default([]),
       githubUrl: z.string().url().optional(),
       liveUrl: z.string().url().optional(),
       npmUrl: z.string().url().optional(),

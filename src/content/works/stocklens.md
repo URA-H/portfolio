@@ -7,6 +7,11 @@ year: 2026
 format: "Vintage record sleeve, cup-and-handle chart"
 shortDescription: "日本株向け AI 銘柄分析 SaaS"
 jacket: ../../assets/jackets/01-stocklens.png
+screenshots:
+  - ../../assets/screenshots/stocklens/index-desktop.png
+  - ../../assets/screenshots/stocklens/login-desktop.png
+  - ../../assets/screenshots/stocklens/signup-desktop.png
+  - ../../assets/screenshots/stocklens/pricing-desktop.png
 githubUrl: "https://github.com/URA-H/stocklens"
 techStack:
   - "Next.js 16"

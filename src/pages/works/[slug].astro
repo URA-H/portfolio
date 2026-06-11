@@ -118,6 +118,29 @@ const { Content } = await render(work);
       <Content />
     </article>
 
+    {
+      work.data.screenshots.length > 0 && (
+        <section class="mt-20">
+          <p class="font-mono text-xs text-fg-muted mb-6 tracking-widest uppercase">
+            Screenshots · {work.data.screenshots.length}
+          </p>
+          <div class="space-y-10">
+            {work.data.screenshots.map((shot, i) => (
+              <figure>
+                <Image
+                  src={shot}
+                  alt={`${work.data.title} screenshot ${i + 1}`}
+                  class="w-full border border-border-default"
+                  widths={[640, 1024, 1440]}
+                  sizes="(max-width: 768px) 100vw, 896px"
+                />
+              </figure>
+            ))}
+          </div>
+        </section>
+      )
+    }
+
     <footer
       class="mt-32 border-t border-border-default pt-6 flex justify-between font-mono text-xs text-fg-muted"
     >

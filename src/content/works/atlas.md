@@ -7,6 +7,9 @@ year: 2026
 format: "Vintage botanical plate, coffee branch study"
 shortDescription: "コーヒーのテイスティングを地図帳に綴じる Web アプリ"
 jacket: ../../assets/jackets/04-atlas.png
+screenshots:
+  - ../../assets/screenshots/atlas/new-desktop-initial.png
+  - ../../assets/screenshots/atlas/coffee-detail.png
 githubUrl: "https://github.com/URA-H/atlas"
 liveUrl: "https://atlas-eight-mauve.vercel.app"
 techStack:

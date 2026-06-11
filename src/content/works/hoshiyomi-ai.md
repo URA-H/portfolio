@@ -7,6 +7,9 @@ year: 2026
 format: "Vintage record sleeve, western constellation map"
 shortDescription: "西洋占星術 × AI のホロスコープ生成"
 jacket: ../../assets/jackets/02-hoshiyomi.png
+screenshots:
+  - ../../assets/screenshots/hoshiyomi/index-desktop.png
+  - ../../assets/screenshots/hoshiyomi/birth-desktop.png
 githubUrl: "https://github.com/URA-H/hoshi-yomi-ai"
 techStack:
   - "Next.js"
