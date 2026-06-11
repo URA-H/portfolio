@@ -113,7 +113,13 @@ const { Content } = await render(work);
     </div>
 
     <article
-      class="max-w-2xl font-body text-base text-fg-primary leading-relaxed [&>p]:mb-4"
+      class="max-w-3xl font-body text-base text-fg-primary leading-relaxed
+        [&>p]:mb-4
+        [&>h2]:font-display [&>h2]:text-2xl [&>h2]:text-fg-primary [&>h2]:mt-12 [&>h2]:mb-4
+        [&>h3]:font-display [&>h3]:text-xl [&>h3]:text-fg-primary [&>h3]:mt-8 [&>h3]:mb-3
+        [&>ul]:my-4 [&>ul]:pl-5 [&>ul]:list-disc [&>ul]:space-y-1
+        [&_pre]:bg-bg-secondary [&_pre]:border [&_pre]:border-border-default [&_pre]:p-5 [&_pre]:my-6 [&_pre]:overflow-x-auto [&_pre]:font-mono [&_pre]:text-[13px] [&_pre]:leading-relaxed
+        [&_:not(pre)>code]:font-mono [&_:not(pre)>code]:text-[13px] [&_:not(pre)>code]:bg-bg-secondary [&_:not(pre)>code]:px-1.5 [&_:not(pre)>code]:py-0.5 [&_:not(pre)>code]:border [&_:not(pre)>code]:border-border-default"
     >
       <Content />
     </article>
