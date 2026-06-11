@@ -30,7 +30,7 @@ const SPRING_CONFIG = {
 };
 
 // Click → expand → hold → navigate
-const HOLD_DURATION_MS = 4000;
+const HOLD_DURATION_MS = 2000;
 const HOLD_REDUCED_MOTION_MS = 500;
 const EXPAND_DURATION_S = 0.6;
 const EXPAND_TARGET_SIZE = 480;

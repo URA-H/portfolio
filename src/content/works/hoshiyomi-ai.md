@@ -11,6 +11,7 @@ screenshots:
   - ../../assets/screenshots/hoshiyomi/index-desktop.png
   - ../../assets/screenshots/hoshiyomi/birth-desktop.png
 githubUrl: "https://github.com/URA-H/hoshi-yomi-ai"
+liveUrl: "https://hoshi-yomi-ai.vercel.app"
 techStack:
   - "Next.js"
   - "Claude API"
