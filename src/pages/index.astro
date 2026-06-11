@@ -31,41 +31,57 @@ const shelfData: ShelfWork[] = await Promise.all(
 ---
 
 <Layout>
-  <main class="min-h-screen py-24">
-    <header class="mb-20 px-6 max-w-6xl mx-auto">
-      <p class="font-mono text-xs text-fg-secondary mb-4 tracking-wider uppercase">
-        HU RECORDS — EST. 2026
-      </p>
-      <h1 class="font-display text-5xl md:text-6xl text-fg-primary leading-none mb-3">
-        Haruya Ura
-      </h1>
-      <p class="font-body text-lg text-fg-secondary">
-        Engineer / Maker. A small shelf of releases.
-      </p>
+  <main class="relative h-screen w-screen overflow-hidden">
+    {/* Top-left header overlay */}
+    <header class="absolute top-5 left-5 z-30 flex gap-1.5">
+      <span
+        class="border border-border-strong bg-bg-primary px-3 py-1.5 font-mono text-[10px] text-fg-primary tracking-widest uppercase"
+      >
+        HU RECORDS
+      </span>
+      <a
+        href="#"
+        class="border border-border-default bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5 font-mono text-[10px] text-fg-secondary hover:text-fg-primary tracking-widest uppercase transition-colors"
+      >
+        Projects
+      </a>
+      <a
+        href="/about"
+        class="border border-border-default bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5 font-mono text-[10px] text-fg-secondary hover:text-fg-primary tracking-widest uppercase transition-colors"
+      >
+        About
+      </a>
+      <a
+        href="mailto:ft.hu.0418@gmail.com"
+        class="border border-border-default bg-bg-primary/85 backdrop-blur-sm px-3 py-1.5 font-mono text-[10px] text-fg-secondary hover:text-fg-primary tracking-widest uppercase transition-colors"
+      >
+        Contact
+      </a>
     </header>
 
-    <section class="mb-32">
-      <div class="px-6 max-w-6xl mx-auto mb-10 border-t border-border-default pt-12">
-        <p class="font-mono text-xs text-fg-secondary mb-3 tracking-wider uppercase">
-          Catalogue · 11 records
-        </p>
-        <h2 class="font-display text-3xl md:text-4xl text-fg-primary mb-2">
-          Drag the crate.
-        </h2>
-        <p class="font-body text-sm text-fg-secondary">
-          Eleven jackets — four LPs, three 12-inch singles, liner notes, a spec sheet,
-          a cert EP, and one that hasn't been released yet.
-        </p>
-      </div>
+    {/* The shelf — full canvas */}
+    <Shelf works={shelfData} client:load />
 
-      <Shelf works={shelfData} client:load />
-    </section>
-
+    {/* Bottom-right identifier */}
     <footer
-      class="px-6 max-w-6xl mx-auto border-t border-border-default pt-6 flex justify-between font-mono text-xs text-fg-muted"
+      class="absolute bottom-5 right-5 z-30 font-mono text-[10px] text-fg-muted tracking-widest uppercase"
     >
-      <span>HUR-PROTO-A</span>
-      <span>2026</span>
+      Haruya Ura · 11 records · 2026
     </footer>
+
+    {/* Bottom-left hint */}
+    <p
+      class="absolute bottom-5 left-5 z-30 font-mono text-[10px] text-fg-muted tracking-widest uppercase"
+    >
+      ← drag · scroll · click
+    </p>
   </main>
 </Layout>
+
+<style is:global>
+  html,
+  body {
+    height: 100%;
+    overflow: hidden;
+  }
+</style>

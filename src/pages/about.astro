@@ -1,0 +1,216 @@
+---
+import { Image } from 'astro:assets';
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+
+const works = await getCollection('works');
+const aboutEntry = works.find((w) => w.id === 'about');
+const skillEntry = works.find((w) => w.id === 'skill-sheet');
+const credEntry = works.find((w) => w.id === 'credentials');
+
+if (!aboutEntry || !skillEntry || !credEntry) {
+  throw new Error('Missing work entry');
+}
+
+const skillGroups = [
+  {
+    label: 'Languages',
+    items: ['TypeScript', 'JavaScript', 'Java', 'Python'],
+  },
+  {
+    label: 'Frontend',
+    items: ['Next.js', 'Astro', 'React', 'Tailwind v4', 'shadcn/ui'],
+  },
+  {
+    label: 'Backend / Server',
+    items: ['FastAPI', 'Node.js 20+', 'MCP SDK', 'Hono'],
+  },
+  {
+    label: 'AI',
+    items: ['Claude API', 'Hugging Face (FLUX)', 'Gemini', 'OpenAI'],
+  },
+  {
+    label: 'Data & Infra',
+    items: [
+      'PostgreSQL',
+      'Oracle',
+      'Neon',
+      'Vercel',
+      'Cloudflare Pages',
+      'GitHub Pages',
+    ],
+  },
+  {
+    label: 'Tooling & QA',
+    items: ['Playwright', 'Vitest', 'pnpm', 'Stripe', 'OAuth'],
+  },
+];
+---
+
+<Layout
+  title="About — Haruya Ura"
+  description="Liner notes. Profile, skills, and credentials of the maker."
+>
+  <main class="min-h-screen px-6 py-16 max-w-4xl mx-auto">
+    <a
+      href="/"
+      class="font-mono text-xs text-fg-secondary hover:text-accent-strong transition-colors"
+    >
+      ← shelf
+    </a>
+
+    <header class="mt-12 mb-12">
+      <p class="font-mono text-xs text-fg-secondary mb-3 tracking-wider uppercase">
+        HU-05 / HU-06 / HU-07 · Liner Notes
+      </p>
+      <h1 class="font-display text-5xl md:text-6xl text-fg-primary leading-none">
+        About
+      </h1>
+      <p class="font-body text-lg text-fg-secondary mt-3">
+        The artist behind the catalogue.
+      </p>
+    </header>
+
+    <nav class="flex gap-6 mb-16 font-mono text-xs text-fg-secondary tracking-wider uppercase border-t border-b border-border-default py-3">
+      <a href="#profile" class="hover:text-accent-strong transition-colors">
+        Profile
+      </a>
+      <a href="#skills" class="hover:text-accent-strong transition-colors">
+        Skills
+      </a>
+      <a href="#credentials" class="hover:text-accent-strong transition-colors">
+        Credentials
+      </a>
+    </nav>
+
+    <section id="profile" class="scroll-mt-12 mb-24">
+      <div class="grid md:grid-cols-[200px_1fr] gap-8 items-start">
+        <div class="aspect-square overflow-hidden border border-border-default bg-bg-secondary">
+          <Image
+            src={aboutEntry.data.jacket}
+            alt="About jacket"
+            width={400}
+            height={400}
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <div>
+          <p class="font-mono text-[10px] text-fg-muted mb-2 tracking-wider uppercase">
+            {aboutEntry.data.catalogNumber} · {aboutEntry.data.matrixNumber}
+          </p>
+          <h2 class="font-display text-3xl text-fg-primary mb-4">Profile</h2>
+
+          <div class="font-body text-base text-fg-primary leading-relaxed space-y-4">
+            <p>
+              Engineer / maker. Currently shipping small considered things that
+              span finance, occult, coffee, and developer tooling.
+            </p>
+            <p>
+              Day job background in public-sector systems (Java / Oracle for
+              municipalities, public insurance, and emergency services). Outside
+              that I've been exploring AI-native applications, modern web stacks,
+              and the Model Context Protocol — the catalogue here is what came
+              out of that exploration.
+            </p>
+            <p>
+              Working with miryo.AI on AI-implementation contracts. Open to
+              opportunities where engineering meets craft.
+            </p>
+          </div>
+
+          <div class="mt-6 flex flex-col gap-2 font-mono text-xs">
+            <a
+              href="https://github.com/URA-H"
+              class="text-accent-strong hover:underline"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub: URA-H →
+            </a>
+            <a
+              href="mailto:ft.hu.0418@gmail.com"
+              class="text-accent-strong hover:underline"
+            >
+              ft.hu.0418@gmail.com →
+            </a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="skills" class="scroll-mt-12 mb-24">
+      <div class="grid md:grid-cols-[200px_1fr] gap-8 items-start">
+        <div class="aspect-square overflow-hidden border border-border-default bg-bg-secondary">
+          <Image
+            src={skillEntry.data.jacket}
+            alt="Skill sheet jacket"
+            width={400}
+            height={400}
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <div>
+          <p class="font-mono text-[10px] text-fg-muted mb-2 tracking-wider uppercase">
+            {skillEntry.data.catalogNumber} · {skillEntry.data.matrixNumber}
+          </p>
+          <h2 class="font-display text-3xl text-fg-primary mb-4">Skill Sheet</h2>
+
+          <p class="font-body text-base text-fg-secondary mb-6">
+            What I reach for when shipping.
+          </p>
+
+          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+            {
+              skillGroups.map((group) => (
+                <div>
+                  <dt class="font-mono text-[10px] text-fg-muted mb-2 tracking-wider uppercase">
+                    {group.label}
+                  </dt>
+                  <dd class="font-body text-sm text-fg-primary leading-relaxed">
+                    {group.items.join(' · ')}
+                  </dd>
+                </div>
+              ))
+            }
+          </dl>
+        </div>
+      </div>
+    </section>
+
+    <section id="credentials" class="scroll-mt-12 mb-24">
+      <div class="grid md:grid-cols-[200px_1fr] gap-8 items-start">
+        <div class="aspect-square overflow-hidden border border-border-default bg-bg-secondary">
+          <Image
+            src={credEntry.data.jacket}
+            alt="Credentials jacket"
+            width={400}
+            height={400}
+            class="w-full h-full object-cover"
+          />
+        </div>
+
+        <div>
+          <p class="font-mono text-[10px] text-fg-muted mb-2 tracking-wider uppercase">
+            {credEntry.data.catalogNumber} · {credEntry.data.matrixNumber}
+          </p>
+          <h2 class="font-display text-3xl text-fg-primary mb-4">Credentials</h2>
+
+          <p class="font-body text-base text-fg-secondary italic">
+            Coming soon.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <footer
+      class="mt-32 border-t border-border-default pt-6 flex justify-between font-mono text-xs text-fg-muted"
+    >
+      <span>HUR-LINER-NOTES</span>
+      <a href="/" class="hover:text-accent-strong transition-colors">
+        ← back to shelf
+      </a>
+    </footer>
+  </main>
+</Layout>
