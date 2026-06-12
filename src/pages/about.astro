@@ -2,6 +2,7 @@
 import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
 import Layout from '../layouts/Layout.astro';
+import ogImage from '../assets/jackets/05-about.png';
 
 const works = await getCollection('works');
 const aboutEntry = works.find((w) => w.id === 'about');
@@ -86,6 +87,7 @@ const LEVEL_LABEL: Record<number, string> = {
 <Layout
   title="About — Haruya Ura"
   description="Liner notes. Profile, skills, and credentials of the maker."
+  ogImage={ogImage}
 >
   <main class="min-h-screen px-6 py-16 max-w-4xl mx-auto">
     <a

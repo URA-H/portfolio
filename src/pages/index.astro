@@ -3,6 +3,7 @@ import { getCollection } from 'astro:content';
 import { getImage } from 'astro:assets';
 import Layout from '../layouts/Layout.astro';
 import Shelf, { type ShelfWork } from '../components/Shelf';
+import ogImage from '../assets/jackets/04-atlas.png';
 
 const works = (await getCollection('works')).sort(
   (a, b) => a.data.order - b.data.order,
@@ -30,7 +31,11 @@ const shelfData: ShelfWork[] = await Promise.all(
 );
 ---
 
-<Layout>
+<Layout
+  title="Haruya Ura — Portfolio"
+  description="Engineer / Maker. 11 jackets on a record shop shelf — apps, MCP servers, and a CLI."
+  ogImage={ogImage}
+>
   <main class="relative h-screen w-screen overflow-hidden">
     {/* Top-left header overlay */}
     <header class="absolute top-5 left-5 z-30 flex gap-1.5">

@@ -1,25 +1,62 @@
 ---
+import type { ImageMetadata } from 'astro';
+import { getImage } from 'astro:assets';
 import '../styles/global.css';
 
 interface Props {
   title?: string;
   description?: string;
+  ogImage?: ImageMetadata;
 }
 
 const {
   title = 'Haruya Ura — Portfolio',
   description = 'Engineer / Maker. A small shelf of releases.',
+  ogImage,
 } = Astro.props;
+
+const site = Astro.site ?? new URL('https://portfolio-eiq.pages.dev/');
+const canonicalUrl = new URL(Astro.url.pathname, site).toString();
+
+let ogImageUrl: string | undefined;
+if (ogImage) {
+  const optimized = await getImage({
+    src: ogImage,
+    width: 1200,
+    height: 630,
+    format: 'jpg',
+    fit: 'cover',
+  });
+  ogImageUrl = new URL(optimized.src, site).toString();
+}
 ---
 
 <!doctype html>
 <html lang="ja">
   <head>
     <meta charset="utf-8" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="generator" content={Astro.generator} />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <title>{title}</title>
     <meta name="description" content={description} />
+    <link rel="canonical" href={canonicalUrl} />
+
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:url" content={canonicalUrl} />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="Haruya Ura — Portfolio" />
+    <meta property="og:locale" content="ja_JP" />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+    {ogImageUrl && <meta property="og:image:width" content="1200" />}
+    {ogImageUrl && <meta property="og:image:height" content="630" />}
+
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+    {ogImageUrl && <meta name="twitter:image" content={ogImageUrl} />}
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,8 +64,6 @@ const {
       href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@400;500;700&family=JetBrains+Mono:wght@400;500&family=Noto+Sans+JP:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-
-    <title>{title}</title>
   </head>
   <body>
     <slot />
