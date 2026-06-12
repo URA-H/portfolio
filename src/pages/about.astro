@@ -12,39 +12,75 @@ if (!aboutEntry || !skillEntry || !credEntry) {
   throw new Error('Missing work entry');
 }
 
+// Level: 1=Touched, 2=Used, 3=Comfortable, 4=Strong, 5=Expert
+// 業務経験があるのは Java のみ。それ以外は個人開発レベル = 3 で揃える。
 const skillGroups = [
   {
     label: 'Languages',
-    items: ['TypeScript', 'JavaScript', 'Java', 'Python'],
+    items: [
+      { name: 'Java', level: 4 },
+      { name: 'TypeScript', level: 3 },
+      { name: 'JavaScript', level: 3 },
+      { name: 'Python', level: 3 },
+    ],
   },
   {
     label: 'Frontend',
-    items: ['Next.js', 'Astro', 'React', 'Tailwind v4', 'shadcn/ui'],
+    items: [
+      { name: 'Next.js', level: 3 },
+      { name: 'Astro', level: 3 },
+      { name: 'React', level: 3 },
+      { name: 'Tailwind v4', level: 3 },
+      { name: 'shadcn/ui', level: 3 },
+    ],
   },
   {
     label: 'Backend / Server',
-    items: ['FastAPI', 'Node.js 20+', 'MCP SDK', 'Hono'],
+    items: [
+      { name: 'Node.js 20+', level: 3 },
+      { name: 'FastAPI', level: 3 },
+      { name: 'MCP SDK', level: 3 },
+    ],
   },
   {
     label: 'AI',
-    items: ['Claude API', 'Hugging Face (FLUX)', 'Gemini', 'OpenAI'],
+    items: [
+      { name: 'Claude API', level: 4 },
+      { name: 'Hugging Face (FLUX)', level: 3 },
+      { name: 'Gemini', level: 3 },
+      { name: 'OpenAI', level: 3 },
+    ],
   },
   {
     label: 'Data & Infra',
     items: [
-      'PostgreSQL',
-      'Oracle',
-      'Neon',
-      'Vercel',
-      'Cloudflare Pages',
-      'GitHub Pages',
+      { name: 'Oracle', level: 4 },
+      { name: 'PostgreSQL', level: 3 },
+      { name: 'Neon', level: 3 },
+      { name: 'Vercel', level: 3 },
+      { name: 'Cloudflare Pages', level: 3 },
+      { name: 'GitHub Pages', level: 3 },
     ],
   },
   {
     label: 'Tooling & QA',
-    items: ['Playwright', 'Vitest', 'pnpm', 'Stripe', 'OAuth'],
+    items: [
+      { name: 'pnpm', level: 3 },
+      { name: 'Playwright', level: 3 },
+      { name: 'Vitest', level: 3 },
+      { name: 'Stripe', level: 3 },
+      { name: 'OAuth', level: 3 },
+    ],
   },
 ];
+
+const LEVEL_LABEL: Record<number, string> = {
+  1: 'Touched',
+  2: 'Used',
+  3: 'Comfortable',
+  4: 'Strong',
+  5: 'Expert',
+};
 ---
 
 <Layout
@@ -102,24 +138,29 @@ const skillGroups = [
           <h2 class="font-display text-3xl text-fg-primary mb-4">Profile</h2>
 
           <div class="font-body text-base text-fg-primary leading-relaxed space-y-4">
+            <p>Engineer / maker.</p>
             <p>
-              Engineer / maker. Currently shipping small considered things that
-              span finance, occult, coffee, and developer tooling.
+              現職は公共系（自治体・共済・消防）の Java / Oracle システム開発。
+              仕事の外側では、業務では触れない領域 — AI applications, modern web,
+              Model Context Protocol — を自力で詰めるための作品を作っています。
             </p>
             <p>
-              Day job background in public-sector systems (Java / Oracle for
-              municipalities, public insurance, and emergency services). Outside
-              that I've been exploring AI-native applications, modern web stacks,
-              and the Model Context Protocol — the catalogue here is what came
-              out of that exploration.
-            </p>
-            <p>
-              Working with miryo.AI on AI-implementation contracts. Open to
-              opportunities where engineering meets craft.
+              棚の 11 枚は「使える状態まで持っていけるか」を試した記録。小さく完結
+              させて、その都度何かを学ぶ。
             </p>
           </div>
 
-          <div class="mt-6 flex flex-col gap-2 font-mono text-xs">
+          <div class="mt-8">
+            <p class="font-mono text-[10px] text-fg-muted mb-2 tracking-wider uppercase">
+              Open to
+            </p>
+            <ul class="font-body text-base text-fg-primary space-y-1">
+              <li>· Modern Web エンジニアとしての採用</li>
+              <li>· AI 実装の業務委託 / 受託開発</li>
+            </ul>
+          </div>
+
+          <div class="mt-8 flex flex-col gap-2 font-mono text-xs">
             <a
               href="https://github.com/URA-H"
               class="text-accent-strong hover:underline"
@@ -157,19 +198,44 @@ const skillGroups = [
           </p>
           <h2 class="font-display text-3xl text-fg-primary mb-4">Skill Sheet</h2>
 
-          <p class="font-body text-base text-fg-secondary mb-6">
+          <p class="font-body text-base text-fg-secondary mb-4">
             What I reach for when shipping.
           </p>
 
-          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-6">
+          <div class="mb-8 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[10px] text-fg-muted tracking-wider uppercase">
+            <span><span class="text-fg-primary">●</span>○○○○ Touched</span>
+            <span><span class="text-fg-primary">●●</span>○○○ Used</span>
+            <span><span class="text-fg-primary">●●●</span>○○ Comfortable</span>
+            <span><span class="text-fg-primary">●●●●</span>○ Strong</span>
+            <span><span class="text-fg-primary">●●●●●</span> Expert</span>
+          </div>
+
+          <dl class="grid grid-cols-1 sm:grid-cols-2 gap-x-8 gap-y-8">
             {
               skillGroups.map((group) => (
                 <div>
-                  <dt class="font-mono text-[10px] text-fg-muted mb-2 tracking-wider uppercase">
+                  <dt class="font-mono text-[10px] text-fg-muted mb-3 tracking-wider uppercase">
                     {group.label}
                   </dt>
-                  <dd class="font-body text-sm text-fg-primary leading-relaxed">
-                    {group.items.join(' · ')}
+                  <dd class="space-y-1.5">
+                    {group.items.map((item) => (
+                      <div class="flex items-baseline justify-between gap-3">
+                        <span class="font-body text-sm text-fg-primary">
+                          {item.name}
+                        </span>
+                        <span
+                          class="font-mono text-[11px] tracking-[0.25em] shrink-0"
+                          aria-label={`${LEVEL_LABEL[item.level]} (${item.level}/5)`}
+                        >
+                          <span class="text-fg-primary">
+                            {'●'.repeat(item.level)}
+                          </span>
+                          <span class="text-fg-muted">
+                            {'○'.repeat(5 - item.level)}
+                          </span>
+                        </span>
+                      </div>
+                    ))}
                   </dd>
                 </div>
               ))
